@@ -1,10 +1,9 @@
 const bcrypt= require("bcrypt");
 
 const UsersModel= require("../models/Users.js");
-const GoogleUsersModel= require("../models/GoogleUsers.js");
-const LocalUsersModel= require("../models/LocalUsers.js");
 
 module.exports.registerController = async (req,res)=>{
+    //Req.body should have name, email and password
     const {name, email, password}=req.body;
     if(!name || !email || !password){
         res.status(400).json({message:"All fields are required"});
@@ -17,25 +16,17 @@ module.exports.registerController = async (req,res)=>{
     }
     else{
         const newUserData={
+            loginMethod:"local",
             emailId:email,
+            password:await bcrypt.hash(password,10),
             name:name,
             tasksList: [],
-            loginMethod:"local"
+            
         }
         console.log(newUserData);
         let newUser = await UsersModel.create(newUserData);
         
-        const localUserData={
-            emailId:email,
-            password:await bcrypt.hash(password,10),
-            name:name
-        }
-        console.log(localUserData);
-        let newLocalUser = await LocalUsersModel.create(localUserData);
-
-        
         await newUser.save();
-        await newLocalUser.save();
         
         res.status(200).json({message:"User registered successfully"});
         return;
@@ -43,6 +34,7 @@ module.exports.registerController = async (req,res)=>{
 }
 
 module.exports.loginController = async (req,res)=>{
+    //Req.body must have "email" and "password"
     if(req.user){
         let userData=req.user;
         console.log('Login Controller Function:',userData);
@@ -55,5 +47,12 @@ module.exports.loginController = async (req,res)=>{
 }
 
 module.exports.logoutController=async (req,res)=>{
-    console.log('..')
+    req.session.destroy((err)=>{
+        if(err){
+            console.log(err);
+            return res.status(500).json({message:"Error logging out"});
+        }
+    });
+    return res.status(200).json({message:"User logged out successfully"});
+
 }

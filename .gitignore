@@ -1,2 +1,4 @@
 backend/node_modules
+backend/data
+backend/.env
 frontend/toDoList-Frontend/node_modules

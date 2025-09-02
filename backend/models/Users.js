@@ -2,10 +2,17 @@ const mongoose=require('mongoose')
 const {Schema}=require('mongoose')
 
 const usersSchema=new Schema({
+    loginMethod: {
+        type: String,
+        required: true
+    },
     emailId:{
         type: String,
         required: true,
         unique:true
+    },
+    password:{
+        type: String,
     },
     name:{
         type: String,
@@ -14,11 +21,8 @@ const usersSchema=new Schema({
     tasksList:{
         type: Array,
         required: true
-    },
-    loginMethod: {
-        type: String,
-        required: true
     }
+    
 })
 
 module.exports=mongoose.model('Users',usersSchema)

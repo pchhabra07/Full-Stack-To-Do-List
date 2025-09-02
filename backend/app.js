@@ -4,12 +4,14 @@ const passport=require('passport')
 const mongoose=require('mongoose')
 const flash=require('connect-flash')
 
-const router=require('./routers/router.js')
+const userRouter=require('./routers/userRouter.js')
+const taskRouter=require('./routers/taskRouter.js')
 
 const app=express();
 
 const port=3000;
 
+require('dotenv').config({quiet:true});
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -27,12 +29,13 @@ app.use(passport.session())
 
 require('./authentication/passport.js')
 
-app.use('/',router);
+app.use('/user',userRouter);
+app.use('/tasks',taskRouter);
 
-mongoose.connect('mongodb://localhost:27017/to-do-app')
+mongoose.connect(process.env.MONGO_URL)
 .then(()=>{
     app.listen(port,()=>{
-        console.log(`Server is running at http://localhost:${port}`);
+        console.log(`Server is running at ${process.env.SERVER_URL}:${port}`);
     })
 })
 .catch(err=>{

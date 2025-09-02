@@ -2,20 +2,20 @@ const passport=require('passport');
 const bcrypt=require('bcrypt');
 
 const LocalStrategy=require('passport-local').Strategy;
-const GoogleStrategy=require('passport-google-oauth20').Strategy;
 
 const Users=require('../models/Users.js');
-const LocalUsers=require('../models/LocalUsers.js');
-const GoogleUsers=require('../models/GoogleUsers.js')
 
-passport.use(new LocalStrategy(
+require('dotenv').config();
+
+passport.use('local',new LocalStrategy(
    {
     usernameField:'email',
    passwordField:'password'
     },
     async (email,password,done)=>{
+        //Req.body must have "email" and "password"
         try{
-            const user=await LocalUsers.findOne({emailId:email});
+            const user=await Users.findOne({emailId:email});
             if(!user){
                 return done(null,false,{message:'User not found'});
             }
@@ -39,7 +39,7 @@ passport.serializeUser((user,done)=>{
 
 passport.deserializeUser(async (id,done)=>{
     try{
-        const user=await LocalUsers.findOne({_id: id});
+        const user=await Users.findOne({_id: id});
         if(!user){
             return done(null,false,{message:'User not found'});
         }
