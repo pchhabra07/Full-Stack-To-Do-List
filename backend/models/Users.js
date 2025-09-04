@@ -14,10 +14,6 @@ const usersSchema=new Schema({
     password:{
         type: String,
     },
-    name:{
-        type: String,
-        required: true
-    },
     tasksList:{
         type: Array,
         required: true

@@ -12,12 +12,12 @@ function App() {
 
   return (
     <div className='app-container'>
-      {/* <Routes>
-        <Route index element={<HomePage />} />
+      <Routes>
+        <Route path='/' element={<HomePage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/tasks' element={<TaskListPage/>}/>
-      </Routes> */}
+      </Routes>
     </div>
   )
 }

@@ -1,11 +1,13 @@
 const bcrypt= require("bcrypt");
-
+const passport=require('passport');
 const UsersModel= require("../models/Users.js");
 
+
+
 module.exports.registerController = async (req,res)=>{
-    //Req.body should have name, email and password
-    const {name, email, password}=req.body;
-    if(!name || !email || !password){
+    //Req.body should have email and password
+    const {email, password}=req.body;
+    if(!email || !password){
         res.status(400).json({message:"All fields are required"});
         return;
     }
@@ -19,7 +21,6 @@ module.exports.registerController = async (req,res)=>{
             loginMethod:"local",
             emailId:email,
             password:await bcrypt.hash(password,10),
-            name:name,
             tasksList: [],
             
         }
@@ -27,23 +28,33 @@ module.exports.registerController = async (req,res)=>{
         let newUser = await UsersModel.create(newUserData);
         
         await newUser.save();
+        newUserData.password='';
         
-        res.status(200).json({message:"User registered successfully"});
+        res.status(200).json({...newUserData, message:"User registered successfully"});
         return;
     }
 }
 
-module.exports.loginController = async (req,res)=>{
+module.exports.loginController = async (req,res,next)=>{
     //Req.body must have "email" and "password"
-    if(req.user){
-        let userData=req.user;
-        console.log('Login Controller Function:',userData);
-        userData.isAuthenticated=true;
-        return res.status(200).json(userData);
-    }
-    else{
-        return res.status(400).json({message:"User not logged in", isAuthenticated:false});
-    }
+    passport.authenticate('local',{failureFlash: true },(err,user,info)=>{
+        if(err){
+            return res.status(500).json({message:"Error logging in"});
+        }
+        if(!user){
+            return res.status(401).json({message:info.message});
+        }
+        
+        req.logIn(user,(err)=>{
+            if(err){
+                return res.status(500).json({message:"Error logging in"});
+            }
+            else{
+                user.password='';
+                return res.status(200).json({...user, message:"User logged in successfully"});
+            }
+        })
+    })(req,res,next);
 }
 
 module.exports.logoutController=async (req,res)=>{
