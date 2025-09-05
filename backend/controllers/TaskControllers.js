@@ -4,7 +4,7 @@ module.exports.getTasksController= async(req,res)=>{
     //Req.body should have emailId
     try{
         const userData= await UsersModel.findOne({emailId:req.body.emailId});
-        return res.status(200).json(userData.tasksList);
+        return res.status(200).json({tasksList: userData.tasksList});
     }
     catch(err){
         console.log(err);
@@ -68,7 +68,7 @@ module.exports.deleteTaskController= async(req,res)=>{
 
 module.exports.clearCompletedController= async(req,res)=>{
     try{
-        //Req.body requires nothing
+        //Req.body requires emailId
         const userData= await UsersModel.findOne({emailId:req.body.emailId});
 
         userData.tasksList=userData.tasksList.filter((task)=>!task.isCompleted);

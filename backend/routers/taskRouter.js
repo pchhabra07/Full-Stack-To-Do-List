@@ -4,7 +4,7 @@ const {getTasksController, addTaskController, editTaskController, deleteTaskCont
 
 const router=express.Router();
 
-router.get('/get-tasks', getTasksController)
+router.post('/get-tasks', getTasksController)
 
 router.post('/add-task', addTaskController)
 
@@ -12,7 +12,7 @@ router.post('/edit-task', editTaskController)
 
 router.post('/delete-task', deleteTaskController)
 
-router.get('/clear-completed', clearCompletedController)
+router.post('/clear-completed', clearCompletedController)
 
 router.post('/complete-task', completeTaskController)
 

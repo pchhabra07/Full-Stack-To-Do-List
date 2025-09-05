@@ -25,7 +25,7 @@ body{
     border-radius: 20px;
 }
 
-.home-page-container, .register-page-container, .login-page-container{
+.home-page-container, .register-page-container, .login-page-container, .task-list-page-container{
     width: 100%;
     height: 100%;
     display: flex;
@@ -163,16 +163,224 @@ input:-webkit-autofill:active {
 }
 
 .input-invalid{
-    border: 1px solid red;
+    border: 1px solid #f87171;
 }
 
 .label-invalid{
-    color: red;
+    color: #f87171;
 }
 
 .alert-message{
-    color: red;
+    color: #f87171;
     font-size: 14px;
     margin: 0px;
     font-family: sans-serif;
+}
+
+.top-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.to-do-list-heading{
+    margin: 30px 0px 0px 30px;
+    font-family: sans-serif;
+    color: white;
+}
+
+.logout-button{
+    height: 40px;
+    width: 100px;
+    border-radius: 10px;
+    font-family: sans-serif;
+    font-size: 16px;
+    color: white;
+    background-color: #3f3f46;
+    border: none;
+    margin: 30px 20px 0px 0px;
+}
+
+.logout-button:hover{
+    background-color: #52525b;
+    cursor: pointer;
+}
+
+.task-input-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.task-input{
+    width: 70%;
+}
+
+.filter-button-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+
+.filter-button{
+    height: 40px;
+    border-radius: 10px;
+    font-family: sans-serif;
+    font-size: 16px;
+    color: white;
+    background-color: #3f3f46;
+    border: none;
+    margin: 10px 15px 0px 0px;
+    padding: 0px 10px 0px 10px;
+}
+
+.filter-button:hover{
+    background-color: #52525b;
+    cursor: pointer;
+}
+
+.active{
+    background-color: #7c3aed;
+}
+
+.active:hover{
+    background-color: #7c3aed;
+}
+
+.clear-completed-button{
+    color: #f87171;
+}
+
+.tasks-container{
+    padding: 0px 10px 0px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    margin: 10px 0px 10px 0px;
+    overflow: auto;
+    
+}
+
+.task{
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+    width: 80%;
+    background-color: #3f3f46;
+    border-radius: 10px;
+    margin: 5px 0px 5px 0px;
+    
+}
+
+.task-left-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 50%;
+    justify-content: left;
+}
+
+.task-checkbox-unchecked{
+    height: 25px;
+    width: 25px;
+    margin: 5px 0px 5px 10px;
+    background-image: url('../assests/checkbox-unchecked.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
+    background-color: #3f3f46;
+    border: none;
+    border-radius: 5px;
+}
+
+.task-checkbox-checked{
+    height: 25px;
+    width: 25px;
+    margin: 5px 0px 5px 10px;
+    background-image: url('../assests/checkbox-checked.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
+    background-color: #3f3f46;
+    border: none;
+    border-radius: 5px;
+}
+
+.task-checkbox-checked:hover, .task-checkbox-unchecked:hover{
+    cursor: pointer;
+    background-color: #52525b;
+}
+
+
+.task-text{
+    color: white;
+    font-family: sans-serif;
+    font-size: 15px;
+    margin: 5px 0px 5px 10px;
+}
+
+.task-right-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+    width: 50%;
+}
+
+
+
+.delete-img{
+    background-image: url('../assests/delete-button.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
+    height: 25px;
+    width: 25px;
+    background-color: #3f3f46;
+    border: none;
+    border-radius: 5px;
+    margin: 0px 10px 0px 0px;
+}
+
+.delete-img:hover{
+    background-color: #52525b;
+    cursor: pointer;
+}
+
+.edit-img{
+    background-image: url('../assests/edit-button.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 70%;
+    height: 25px;
+    width: 25px;
+    background-color: #3f3f46;
+    border: none;
+    border-radius: 5px;
+    margin: 0px 10px 0px 0px;
+}
+
+.edit-img:hover{
+    background-color: #52525b;
+    cursor: pointer
+}
+
+.edit-task-input{
+    height: 24px;
+    width: 75%;
+    margin-top: 10px;
+    font-size: 15px;
+    font-family: sans-serif;
+}
+
+.completed-task-text{
+    text-decoration: line-through;
 }
