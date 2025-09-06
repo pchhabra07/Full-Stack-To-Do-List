@@ -31,19 +31,26 @@ const TaskListPage = () => {
   const taskRef=useRef();
   
 
-  function taskSubmitHandler(event){
+  async function taskSubmitHandler(event){
     event.preventDefault();
     
     const taskText=taskRef.current.value;
     
-    axios.post('http://localhost:3000/tasks/add-task',{emailId: userData._doc.emailId, taskText: taskText})
-    .then(response => {
-      setTasksArray([...tasksArray, {text: taskText, isCompleted: false}]);
-    })
-    .catch(error => {
-      console.log(error);
-    })
-    taskRef.current.value='';
+    if(taskText.trim()===''){
+      return;
+    }
+
+    if(userData){
+      console.log(userData)
+      axios.post('http://localhost:3000/tasks/add-task',{emailId: userData.emailId, taskText: taskText})
+      .then(response => {
+        setTasksArray([...tasksArray, {text: taskText, isCompleted: false}]);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+      taskRef.current.value='';
+    }
   }
 
   function filterHandler(filterValue){
@@ -70,7 +77,7 @@ const TaskListPage = () => {
   }
 
   function clearCompletedHandler(){
-    axios.post('http://localhost:3000/tasks/clear-completed',{emailId: userData._doc.emailId})
+    axios.post('http://localhost:3000/tasks/clear-completed',{emailId: userData.emailId})
     .then(response => {
       console.log(response.data);
       let tasksArrayCopy=[...tasksArray];
@@ -86,13 +93,13 @@ const TaskListPage = () => {
   }
 
   function toggleTaskStatus(index){
-    let tasksArrayCopy=[...tasksArray];
-    tasksArrayCopy[index].isCompleted=!tasksArrayCopy[index].isCompleted;
-    setTasksArray([...tasksArrayCopy]);
-
-    axios.post('http://localhost:3000/tasks/complete-task',{emailId: userData._doc.emailId, taskIdx: index})
+    
+    axios.post('http://localhost:3000/tasks/complete-task',{emailId: userData.emailId, taskIdx: index})
     .then(response => {
       console.log(response.data);
+      let tasksArrayCopy=[...tasksArray];
+      tasksArrayCopy[index].isCompleted=!tasksArrayCopy[index].isCompleted;
+      setTasksArray([...tasksArrayCopy]);
     })
     .catch(error => {
       console.log(error);
@@ -117,13 +124,13 @@ const TaskListPage = () => {
         taskLeftContainer.replaceChild(taskTextPara, newInput);
         return;
       }
-      let tasksArrayCopy=[...tasksArray];
-      tasksArrayCopy[index].text=newInput.value;
-      setTasksArray([...tasksArrayCopy]);
       
-      axios.post('http://localhost:3000/tasks/edit-task',{emailId: userData._doc.emailId, taskIdx: index, taskText: newInput.value})
+      axios.post('http://localhost:3000/tasks/edit-task',{emailId: userData.emailId, taskIdx: index, taskText: newInput.value})
       .then(response => {
         console.log(response.data);
+        let tasksArrayCopy=[...tasksArray];
+        tasksArrayCopy[index].text=newInput.value;
+        setTasksArray([...tasksArrayCopy]);
         taskTextPara.innerText=newInput.value;
         taskLeftContainer.replaceChild(taskTextPara, newInput);
       })
@@ -135,7 +142,7 @@ const TaskListPage = () => {
 
   function deleteTaskHandler(index){
     
-    axios.post('http://localhost:3000/tasks/delete-task',{emailId: userData._doc.emailId, taskIdx: index})
+    axios.post('http://localhost:3000/tasks/delete-task',{emailId: userData.emailId, taskIdx: index})
     .then(response => {
       console.log(response.data);
       let tasksArrayCopy=[...tasksArray];
@@ -153,10 +160,10 @@ const TaskListPage = () => {
   }
 
   useEffect(() => {
-    if(userData._doc){
-      axios.post('http://localhost:3000/tasks/get-tasks',{emailId: userData._doc.emailId})
+    if(userData.emailId){
+      axios.post('http://localhost:3000/tasks/get-tasks',{emailId: userData.emailId})
       .then(response => {
-        console.log(userData._doc);
+        console.log(userData);
         setTasksArray([...response.data.tasksList]);
       })
       .catch(error => {

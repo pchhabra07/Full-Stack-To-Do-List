@@ -51,7 +51,14 @@ module.exports.loginController = async (req,res,next)=>{
             }
             else{
                 user.password='';
-                return res.status(200).json({...user, message:"User logged in successfully"});
+                const userData={
+                    emailId: user.emailId,
+                    loginMethod: user.loginMethod,
+                    _id: user._id,
+                    message:"User logged in successfully",
+                    isAuthenticated:true,
+                }
+                return res.status(200).json(userData);
             }
         })
     })(req,res,next);

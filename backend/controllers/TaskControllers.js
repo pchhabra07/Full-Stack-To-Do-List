@@ -4,6 +4,7 @@ module.exports.getTasksController= async(req,res)=>{
     //Req.body should have emailId
     try{
         const userData= await UsersModel.findOne({emailId:req.body.emailId});
+        console.log(userData)
         return res.status(200).json({tasksList: userData.tasksList});
     }
     catch(err){
