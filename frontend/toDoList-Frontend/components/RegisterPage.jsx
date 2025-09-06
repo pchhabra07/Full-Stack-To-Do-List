@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router';
 
 const RegisterPage = () => {
   const navigate=useNavigate();
+  const SERVER_URL=import.meta.env.VITE_SERVER_URL;
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -74,7 +75,7 @@ const RegisterPage = () => {
       alertMessage.innerHTML = '';
     }
 
-    axios.post('http://localhost:3000/user/register', {
+    axios.post(`${SERVER_URL}/user/register`, {
       email,
       password
     })

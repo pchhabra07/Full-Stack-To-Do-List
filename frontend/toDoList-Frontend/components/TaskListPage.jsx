@@ -6,6 +6,7 @@ import {useNavigate} from 'react-router';
 
 const TaskListPage = () => {
   const navigate=useNavigate();
+  const SERVER_URL=import.meta.env.VITE_SERVER_URL;
   
   const [userData, setUserData]=useState({});
   
@@ -42,7 +43,7 @@ const TaskListPage = () => {
 
     if(userData){
       console.log(userData)
-      axios.post('http://localhost:3000/tasks/add-task',{emailId: userData.emailId, taskText: taskText})
+      axios.post(`${SERVER_URL}/tasks/add-task`,{emailId: userData.emailId, taskText: taskText})
       .then(response => {
         setTasksArray([...tasksArray, {text: taskText, isCompleted: false}]);
       })
@@ -77,7 +78,7 @@ const TaskListPage = () => {
   }
 
   function clearCompletedHandler(){
-    axios.post('http://localhost:3000/tasks/clear-completed',{emailId: userData.emailId})
+    axios.post(`${SERVER_URL}/tasks/clear-completed`,{emailId: userData.emailId})
     .then(response => {
       console.log(response.data);
       let tasksArrayCopy=[...tasksArray];
@@ -94,7 +95,7 @@ const TaskListPage = () => {
 
   function toggleTaskStatus(index){
     
-    axios.post('http://localhost:3000/tasks/complete-task',{emailId: userData.emailId, taskIdx: index})
+    axios.post(`${SERVER_URL}/tasks/complete-task`,{emailId: userData.emailId, taskIdx: index})
     .then(response => {
       console.log(response.data);
       let tasksArrayCopy=[...tasksArray];
@@ -125,7 +126,7 @@ const TaskListPage = () => {
         return;
       }
       
-      axios.post('http://localhost:3000/tasks/edit-task',{emailId: userData.emailId, taskIdx: index, taskText: newInput.value})
+      axios.post(`${SERVER_URL}/tasks/edit-task`,{emailId: userData.emailId, taskIdx: index, taskText: newInput.value})
       .then(response => {
         console.log(response.data);
         let tasksArrayCopy=[...tasksArray];
@@ -142,7 +143,7 @@ const TaskListPage = () => {
 
   function deleteTaskHandler(index){
     
-    axios.post('http://localhost:3000/tasks/delete-task',{emailId: userData.emailId, taskIdx: index})
+    axios.post(`${SERVER_URL}/tasks/delete-task`,{emailId: userData.emailId, taskIdx: index})
     .then(response => {
       console.log(response.data);
       let tasksArrayCopy=[...tasksArray];
@@ -161,7 +162,7 @@ const TaskListPage = () => {
 
   useEffect(() => {
     if(userData.emailId){
-      axios.post('http://localhost:3000/tasks/get-tasks',{emailId: userData.emailId})
+      axios.post(`${SERVER_URL}/tasks/get-tasks`,{emailId: userData.emailId})
       .then(response => {
         console.log(userData);
         setTasksArray([...response.data.tasksList]);

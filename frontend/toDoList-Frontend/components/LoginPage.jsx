@@ -3,6 +3,7 @@ import {useState, useRef} from 'react';
 import {useNavigate} from 'react-router';
 
 const LoginPage = () => {
+  const SERVER_URL=import.meta.env.VITE_SERVER_URL;
   const navigate=useNavigate();
   
     const emailRef = useRef();
@@ -47,7 +48,7 @@ const LoginPage = () => {
         alertMessage.innerHTML = '';
       }
 
-      axios.post('http://localhost:3000/user/login', {
+      axios.post(`${SERVER_URL}/user/login`, {
         email,
         password
       })
