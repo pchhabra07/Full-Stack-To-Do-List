@@ -384,3 +384,67 @@ input:-webkit-autofill:active {
 .completed-task-text{
     text-decoration: line-through;
 }
+
+/* Small tablets / large phones (≤ 768px) */
+@media screen and (max-width: 768px) {
+  .heading {
+    margin: 15px 0px 0px 20px;
+    font-size: 32px;
+  }
+
+  .top-bar{
+    display: flex;
+    align-items: center;
+  }
+
+  .filter-button-container{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .all-filter-button{
+    margin-left: 5px;
+  }
+
+  .register-button, .login-button, .field-container{
+    width: 80%;
+  }
+
+  input{
+    width: 96%;
+  }
+
+  .register-page-heading{
+    margin-left: 0px;
+  }
+}
+
+/* Phones (≤ 480px) */
+@media screen and (max-width: 480px) {
+  .heading {
+    margin: 15px 0px 0px 10px;
+    font-size: 32px;
+  }
+
+  .register-page-heading{
+    margin-left: 0px;
+  }
+
+  .filter-button-container{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .all-filter-button{
+    margin-left: 5px;
+  }
+
+  .register-button, .login-button, .field-container{
+    width: 80%;
+  }
+
+  input{
+    width: 96%;
+  }
+}
+

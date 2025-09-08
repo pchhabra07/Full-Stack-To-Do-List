@@ -43,7 +43,7 @@ app.use('/tasks',taskRouter);
 mongoose.connect(process.env.MONGO_URL)
 .then(()=>{
     app.listen(port,()=>{
-        console.log(`Server is running at ${process.env.SERVER_URL}:${port}`);
+        console.log(`Server is running at ${process.env.SERVER_URL}`);
     })
 })
 .catch(err=>{
