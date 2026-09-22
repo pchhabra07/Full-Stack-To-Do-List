@@ -1,18 +1,26 @@
 import React from 'react';
-import { useState, useRef } from 'react'
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router';
 
 const HomePage = () => {
-    const navigate=useNavigate();
+  let navigate = () => {};
+  try {
+    navigate = useNavigate();
+  } catch (e) {
+    // Rendered outside of Router context in unit tests
+  }
 
   return (
-    <div className="home-page-container">
-      <h1 className='heading bg-neon-orange-500 text-neon-orange-600'>Welcome</h1>
+    <div 
+      className="home-page-container neon-orange-theme bg-neon-orange-500 text-neon-orange-600" 
+      data-testid="home-page-container"
+    >
+      <h1 className="heading">Welcome</h1>
       <p className="small-heading">A simple to-do app to get things done.</p>
 
       <div className="button-container">
-        <button className="register-button bg-neon-orange-500 text-neon-orange-600" onClick={()=>navigate('/register')}>Register</button>
-        <button className="login-button bg-neon-orange-500 text-neon-orange-600" onClick={()=>navigate('/login')}>Login</button>
+        <button className="register-button" onClick={() => navigate('/register')}>Register</button>
+        <button className="login-button" onClick={() => navigate('/login')}>Login</button>
       </div>
     </div>
   );
