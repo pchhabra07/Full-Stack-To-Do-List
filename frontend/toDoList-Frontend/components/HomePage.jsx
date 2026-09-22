@@ -7,7 +7,7 @@ const HomePage = () => {
   try {
     navigate = useNavigate();
   } catch (e) {
-    // navigate remains noop function if useNavigate throws (e.g. in test environment)
+    navigate = () => {};
   }
 
   return (
