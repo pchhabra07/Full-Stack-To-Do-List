@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useRef } from 'react';
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router';
 
 const HomePage = () => {
@@ -7,20 +7,17 @@ const HomePage = () => {
   try {
     navigate = useNavigate();
   } catch (e) {
-    // Rendered outside of Router context in unit tests
+    // navigate remains noop function if useNavigate throws (e.g. in test environment)
   }
 
   return (
-    <div 
-      className="home-page-container neon-orange-theme bg-neon-orange-500 text-neon-orange-600" 
-      data-testid="home-page-container"
-    >
-      <h1 className="heading">Welcome</h1>
+    <div data-testid="home-page-container" className="home-page-container neon-orange-theme bg-neon-orange-500 text-neon-orange-600">
+      <h1 className='heading'>Welcome</h1>
       <p className="small-heading">A simple to-do app to get things done.</p>
 
       <div className="button-container">
-        <button className="register-button" onClick={() => navigate('/register')}>Register</button>
-        <button className="login-button" onClick={() => navigate('/login')}>Login</button>
+        <button className="register-button" onClick={()=>navigate('/register')}>Register</button>
+        <button className="login-button" onClick={()=>navigate('/login')}>Login</button>
       </div>
     </div>
   );
