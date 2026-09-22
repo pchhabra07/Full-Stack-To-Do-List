@@ -6,8 +6,8 @@ const HomePage = () => {
     const navigate=useNavigate();
 
   return (
-    <div className="home-page-container">
-      <h1 className='heading bg-neon-orange-500 text-neon-orange-600'>Welcome</h1>
+    <div className="home-page-container bg-neon-orange-500 text-neon-orange-600" data-testid="home-page-container">
+      <h1 className='heading'>Welcome</h1>
       <p className="small-heading">A simple to-do app to get things done.</p>
 
       <div className="button-container">
