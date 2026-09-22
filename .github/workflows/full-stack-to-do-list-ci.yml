@@ -108,19 +108,9 @@ jobs:
             npm install --legacy-peer-deps || true
             npm install --save-dev vitest jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom @testing-library/user-event @vitejs/plugin-react --legacy-peer-deps || true
             echo "import '@testing-library/jest-dom';" > vitest.setup.js
-            cat << 'EOF' > vitest.config.js
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
-
-export default defineConfig({
-  plugins: [react()],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./vitest.setup.js'],
-  },
-});
-EOF
+            echo "import { defineConfig } from 'vitest/config';" > vitest.config.js
+            echo "import react from '@vitejs/plugin-react';" >> vitest.config.js
+            echo "export default defineConfig({ plugins: [react()], test: { globals: true, environment: 'jsdom', setupFiles: ['./vitest.setup.js'] } });" >> vitest.config.js
             npx vitest run
             cd ../..
           elif [ -f "package.json" ]; then
@@ -128,19 +118,9 @@ EOF
             npm install --legacy-peer-deps || true
             npm install --save-dev vitest jsdom @testing-library/react @testing-library/dom @testing-library/jest-dom @testing-library/user-event @vitejs/plugin-react --legacy-peer-deps || true
             echo "import '@testing-library/jest-dom';" > vitest.setup.js
-            cat << 'EOF' > vitest.config.js
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
-
-export default defineConfig({
-  plugins: [react()],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./vitest.setup.js'],
-  },
-});
-EOF
+            echo "import { defineConfig } from 'vitest/config';" > vitest.config.js
+            echo "import react from '@vitejs/plugin-react';" >> vitest.config.js
+            echo "export default defineConfig({ plugins: [react()], test: { globals: true, environment: 'jsdom', setupFiles: ['./vitest.setup.js'] } });" >> vitest.config.js
             npx vitest run || npm test
           else
             echo "No package.json found."
