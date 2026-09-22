@@ -12,17 +12,16 @@ on:
         default: 'false'
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
   checks: write
-  security-events: write
 
 jobs:
   # ── Gate 1: Code Style & Quality ────────────────────────────────────
   lint:
     name: lint
     runs-on: ubuntu-latest
-    if: github.event.inputs.test_only != 'true'
+    if: ${{ github.event.inputs.test_only != 'true' }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -43,14 +42,14 @@ jobs:
             npm install --legacy-peer-deps || true
             npx eslint . --max-warnings=50 || true
           else
-            echo "No ESLint configuration found, skipping lint."
+            echo "No ESLint configuration found, skipping."
           fi
 
   # ── Gate 2: Static Application Security Testing (SAST) ───────────────
   security-sast:
     name: security-sast
     runs-on: ubuntu-latest
-    if: github.event.inputs.test_only != 'true'
+    if: ${{ github.event.inputs.test_only != 'true' }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -70,7 +69,7 @@ jobs:
   security-deps:
     name: security-deps
     runs-on: ubuntu-latest
-    if: github.event.inputs.test_only != 'true'
+    if: ${{ github.event.inputs.test_only != 'true' }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -98,22 +97,26 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Dependencies & Run Target Tests
+      - name: Install Dependencies & Execute Target Tests
         run: |
-          set -e
-          echo "=== Locating Tests ==="
+          echo "=== Locating Tests in Target Repository ==="
+          find . -name "*.test.*" -o -name "*.spec.*" | grep -v node_modules || true
+
           if [ -d "frontend/toDoList-Frontend" ]; then
+            echo "Running tests in frontend/toDoList-Frontend..."
             cd frontend/toDoList-Frontend
             npm install --legacy-peer-deps || true
             npm install --save-dev vitest jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event --legacy-peer-deps || true
-            npx vitest run --globals --environment jsdom || npm test || npx jest || true
+            npx vitest run --globals --environment jsdom
             cd ../..
           elif [ -f "package.json" ]; then
+            echo "Running tests in root directory..."
             npm install --legacy-peer-deps || true
             npm install --save-dev vitest jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event --legacy-peer-deps || true
-            npx vitest run --globals --environment jsdom || npm test || npx jest || true
+            npx vitest run --globals --environment jsdom || npm test
           else
-            echo "No test directory found."
+            echo "No package.json found."
+            exit 1
           fi
         env:
           CI: true
@@ -122,10 +125,7 @@ jobs:
   sonarqube:
     name: sonarqube
     runs-on: ubuntu-latest
-    if: github.event.inputs.test_only != 'true' && env.SONAR_TOKEN != ''
-    env:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+    if: ${{ github.event.inputs.test_only != 'true' }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -133,6 +133,7 @@ jobs:
           fetch-depth: 0
 
       - name: SonarQube Quality Gate Scan
+        if: ${{ env.SONAR_TOKEN != '' }}
         uses: sonarsource/sonarqube-scan-action@master
         continue-on-error: true
         env:
